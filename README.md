@@ -1,13 +1,16 @@
 # Complaint Data Analysis Project
 ## Overview
-This project analyzes consumer complaints from the Consumer Financial Protection  database, comprising 9,609,797 records. The workflow includes exploratory data analysis (EDA), data preprocessing, and indexing for a Retrieval-Augmented Generation (RAG) system. The dataset is filtered to focus on specific financial products, resulting in 527,570 records with non-empty narratives, which are cleaned, segmented, and stored in a ChromaDB vector store. Visualizations highlight complaint distributions and data characteristics.
+This project analyzes consumer complaints from the Consumer Financial Protection Bureau (CFPB) database to provide insights into financial product issues and support query resolution for financial analysts. The dataset, originally containing 9,609,797 records, was filtered to 527,570 records with non-empty narratives, focusing on products such as credit cards, personal loans, Buy Now Pay Later services, savings accounts, and money transfers. The analysis involves exploratory data analysis (EDA), data preprocessing, vector store creation for Retrieval-Augmented Generation (RAG), and the development of a Streamlit-based web application for querying complaint data.
 
 ## Project Structure
 ### Notebooks:
 **eda.ipynb**: Performs exploratory data analysis to understand dataset structure, missing values, and complaint distributions.
 **data_preprocessing.ipynb:** Filters and cleans the dataset, focusing on relevant products and narratives.
 **chunk_embed_index.ipynb:** Segments narratives, generates embeddings, and indexes them in a ChromaDB vector store.
+**rag_pipeline.ipynb:** Implementation of the RAG pipeline for query resolution.
+**app.ipynb:** Development of the Streamlit web application.
 
+**vector_store/**: Stores the ChromaDB collection for indexed complaint chunks.
 
 ### Data:
 **complaints.csv:** Original dataset with 9,609,797 records and 18 columns.
@@ -16,12 +19,17 @@ This project analyzes consumer complaints from the Consumer Financial Protection
 
 
 ### Prerequisites
+To run the project, ensure the following are installed:
 
-Python: Version 3.8 or higher.
+Python 3.8 or higher
+
+**Libraries**: pandas, numpy, nltk, sentence-transformers, chromadb, huggingface_hub, streamlit
+
+Jupyter Notebook or Google Colab for running .ipynb files
+Access to the CFPB dataset (complaints.csv)
+
 ### Dependencies:
 Install required packages using:pip install pandas numpy nltk langchain sentence-transformers chromadb matplotlib seaborn
-
-
 
 
 **Hardware**: Sufficient memory for processing large datasets (e.g., 16GB RAM). For full dataset processing, consider cloud-based solutions.
@@ -40,13 +48,25 @@ Ensure complaints.csv is accessible or download it from the CFPB website.
 
 ### Usage
 
-Run EDA:
-jupyter notebook eda.ipynb
+**1. Exploratory Data Analysis:**
 
+Run eda.ipynb to explore dataset characteristics, including product distribution and missing values.
 
-Analyzes dataset structure, missing values, and complaint distributions.
-Outputs visualizations (e.g., product distribution bar charts, narrative presence pie chart).
+**2. Data Preprocessing:**
 
+Execute data_preprocessing.ipynb to filter records, clean narratives, and save the preprocessed dataset as preprocessed_complaints.csv.
+
+**3. Chunking, Embedding, and Indexing:**
+
+Run chunk_embed_index.ipynb to create text chunks, generate embeddings using all-MiniLM-L6-v2, and index them in a ChromaDB vector store.
+
+**4. RAG Pipeline:**
+
+Use rag_pipeline.ipynb to test the Retrieval-Augmented Generation pipeline with sample questions.
+
+**5. Web Application:**
+
+Launch the Streamlit app by running:
 
 ### Preprocess Data:
 jupyter notebook data_preprocessing.ipynb
@@ -68,18 +88,15 @@ Stores results in ./vector_store/.
 
 ### Key Findings
 
-Dataset: 9,609,797 records, with 69.0% missing narratives.
-Filtered Dataset: 527,570 records with non-empty narratives after focusing on select products.
-**Product Distribution:**
-Checking or savings account: 26.7%
-Credit card: 20.8%
-Credit card or prepaid card: 18.9%
+**EDA**: Visualizations of complaint distribution by product and narrative presence.
 
+**Preprocessing**: Filters dataset to relevant products and cleans narratives by removing special characters, stopwords, and boilerplate text.
 
-### Visualizations:
-Bar charts show complaint volumes by product and sub-product.
-Pie chart illustrates narrative presence (31.0% with narratives).
+**Vector Store**: Indexes complaint chunks in ChromaDB for semantic search using all-MiniLM-L6-v2 embeddings.
 
+**RAG Pipeline**: Retrieves relevant complaint excerpts and generates answers using the google/flan-t5-base model.
+
+**Streamlit App**: Provides a user-friendly interface for querying complaints, displaying results with source excerpts, and maintaining conversation history.
 
 **Indexing**: 200 chunks from 100 sampled records indexed in ChromaDB for RAG applications.
 
